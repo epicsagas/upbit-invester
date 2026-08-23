@@ -130,6 +130,18 @@ python3 scripts/test_indicators.py   # 지표 계산 자체검증
 
 모두 Python 표준 라이브러리만 사용하므로 따로 설치할 의존성이 없습니다.
 
+## 감사의 글 (Acknowledgements)
+
+이 플러그인은 다음 세 프로젝트의 설계와 자료를 참고해 만들었습니다.
+
+**[TradingAgents](https://github.com/tauricresearch/tradingagents)** (Tauric Research) — 종합 분석 파이프라인의 뼈대가 된 멀티 에이전트 토론 구조를 가져왔습니다. 강세·약세 연구자의 다중 라운드 토론, 그 결과를 리서치·리스크·포트폴리오·트레이더가 계층적으로 판정해 내려가는 구조, 그리고 과거 판단을 기억했다가 다음 분석에 반영하는 회상 아이디어가 모두 여기서 왔습니다.
+
+**[upbit-agent-skills](https://github.com/upbit-official/upbit-agent-skills)** — 업비트 공식 에이전트 스킬의 설계 방식을 따랐습니다. 스킬 문서의 이중 언어 트리거 설명, 엔드포인트별 참조 문서 구성, 쓰기 작업 전 사용자 확인을 요구하는 게이트 패턴을 참고했습니다.
+
+**[upbit-cli](https://github.com/upbit-official/upbit-cli)** — API 명령 표면(시세·캔들·호가·주문·DCA·TP/SL 폴링)과 API 키 우선순위(플래그 > 환경변수 > 설정 파일) 패턴, `X-Upbit-Initiator` 헤더 컨벤션을 참고했습니다.
+
+**[upbit-strategy-toolkit](https://github.com/upbit-official/upbit-strategy-toolkit)** — 백테스팅 관례를 가져왔습니다. crix ZIP 아카이브에서 전체 히스토리 캔들을 받아 오는 데이터 경로, 마켓별 수수료·최소 주문금액·틱 규칙, 그리고 신호 다음 봉 시가 진입과 손절 우선 청산 같은 백테스트 규칙이 여기서 왔습니다.
+
 ## 라이선스
 
 MIT. 저작권 © 2026 epicsagas.

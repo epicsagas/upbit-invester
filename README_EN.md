@@ -153,6 +153,18 @@ python3 scripts/test_indicators.py   # indicator math self-check
 
 Python standard library only — nothing to install.
 
+## Acknowledgements
+
+This plugin builds on the design and material of four projects.
+
+**[TradingAgents](https://github.com/tauricresearch/tradingagents)** (Tauric Research) — the backbone of the analysis pipeline. The multi-agent debate structure (bull and bear researchers over multiple rounds), the hierarchy of research/risk/portfolio/trader judges, and the idea of journaling past decisions and recalling them in later analyses all come from here.
+
+**[upbit-agent-skills](https://github.com/upbit-official/upbit-agent-skills)** — design conventions from Upbit's official agent skill: bilingual trigger descriptions in skill frontmatter, per-endpoint reference layout, and the user-confirmation gate before write operations.
+
+**[upbit-cli](https://github.com/upbit-official/upbit-cli)** — the API command surface (ticker/candles/orderbook/orders/DCA/polling TP-SL), the API key precedence pattern (flags > env > config file), and the `X-Upbit-Initiator` header convention.
+
+**[upbit-strategy-toolkit](https://github.com/upbit-official/upbit-strategy-toolkit)** — backtesting conventions: the crix ZIP archive data path for full candle history, per-market fee/min-order/tick rules, and engine rules such as next-bar-open entry and stop-loss-first liquidation priority.
+
 ## License
 
 MIT. Copyright © 2026 epicsagas.
