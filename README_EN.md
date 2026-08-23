@@ -1,145 +1,157 @@
-# upbit-investor
+**[English](README_EN.md)** | [한국어](README.md)
 
-[한국어](./README.md)
+<center><h1>upbit-investor</h1></center>
 
-Multi-agent analysis & trading plugin for Upbit (Korean crypto exchange). Runs on four hosts — Claude Code, Codex, agy, hermes. Ports deep-analysis pipeline (bull/bear debate → verdict → risk gates → order proposal) to Upbit KRW markets, and bundles market data, screening, backtesting, and portfolio review into one plugin.
+> Don't make coin calls alone — put the bull and the bear in a room, let them fight, then layer risk gates and your own decision history on top of the verdict.
 
-**No order is ever placed automatically.** Every order requires explicit user confirmation.
+An Upbit coin investment plugin that runs on Claude Code, Codex, Antigravity, and Hermes Agent. Market data, screening, technical indicators, backtesting, portfolio review, and order execution in one bundle — with the centerpiece being an 8-stage role-separated analysis pipeline (table below). Buy/sell orders never fire automatically; your explicit confirmation is always the last gate.
 
----
+## Install
 
-## Quick Start (Beginners)
+```bash
+# Claude Code
+claude plugin marketplace add epicsagas/plugins
+claude plugin install upbit-investor@epicsagas
 
-### Step 1 — no keys needed (market data only)
+# Codex
+codex plugin marketplace add epicsagas/plugins
+codex plugin add upbit-investor
 
-Works immediately after install:
+# Antigravity
+agy plugin install https://github.com/epicsagas/upbit-invester
+
+# Hermes Agent — the install scanner flags this plugin's AGENTS.md guide as a
+# CRITICAL "persistence" finding (heuristic: any agent-config file reference),
+# and dangerous verdicts cannot be --force'd. Temporarily disable install
+# scanning, install, then re-enable:
+hermes config set plugins.scan_on_install false
+hermes plugins install https://github.com/epicsagas/upbit-invester --enable
+hermes config set plugins.scan_on_install true
+hermes gateway restart
+```
+
+## Quick Start
+
+Prerequisites: Python 3.10+ and an agent host. Quotes and analysis need no API
+keys — account queries and orders do.
 
 ```
-"비트코인 지금 시세 어때?" ("What's the BTC price?")
-"KRW-BTC 호가창 보여줘" ("Show the KRW-BTC order book")
-"거래대금 많은 코인 Top 10" ("Top 10 by volume")
-"KRW-BTC 기술적 지표 분석해줘" ("Analyze KRW-BTC indicators")
+You: "Analyze KRW-BTC"            → full 8-stage pipeline
+You: "Pick coins by volume"       → screening + per-candidate summary
+You: "Backtest KRW-BTC"           → strategy returns vs buy-and-hold benchmark
+You: "What's the BTC price now?"  → ticker/orderbook/candle facts
 ```
 
-### Step 2 — full investment analysis
-
-```
-"KRW-BTC 분석해줘" runs the full 8-stage pipeline
-"이 코인 사도 될까?" analysis + entry strategy proposal
-```
-
-### Step 3 — connect your account (API keys)
-
-1. Issue a personal API key at Upbit → My Page → API Management. Security tip: read-only scope is enough for all analysis.
-2. Export the keys:
+To connect an account, issue a key at Upbit → My Page → API Management and
+export it. Read-only scope is recommended to start — everything analytical
+works, and you can add order scope later. Never paste keys into chat or code;
+environment variables only:
 
 ```bash
 export UPBIT_ACCESS_KEY="..."
 export UPBIT_SECRET_KEY="..."
 ```
 
-3. Now available:
+## How It Works
 
-```
-"내 포트폴리오 점검해줘" ("Review my portfolio")
-"KRW-BTC 10만원어치 매수해줘" ("Buy 100k KRW of KRW-BTC") — runs only after a confirmation prompt
-```
+One sentence — "Analyze KRW-BTC" — runs the 8 stages below in order, each
+stage's output feeding the next. Not a vote: a hierarchy of judges, so evidence
+accumulates downward.
 
-> 💡 Start with a read-only key; add order scope later when you trust the workflow. Never paste keys into chat — environment variables only.
+| | Stage | What happens |
+|--|-------|--------------|
+| 📸 | Snapshot | daily/minute candles, ticker, orderbook, trades, indicator JSON, recent news, and recalled past decisions — gathered in one bundle |
+| 👁 | Market analyst | trend, volatility, volume anomalies summarized in a few sentences |
+| 🐂 | Bull researcher | argues the buy case with snapshot numbers (round 1) |
+| 🐻 | Bear researcher | argues the sell/wait case independently (round 1) |
+| ⚔️ | Debate round 2 | each side directly rebuts the other's round-1 arguments |
+| 🧑‍⚖️ | Research manager | judges the debate by evidence quality — rating/confidence/target JSON |
+| 🛡 | Risk manager | runs the 6 risk gates and sizes the position |
+| 📊 | Portfolio manager | cross-checks past decisions, issues the final call (may override) |
+| 📝 | Trader | order proposal with entry, stop-loss, split entries — **proposal only** |
 
----
+When the report lands, the verdict is journaled as one line in
+`~/.upbit-investor/decisions.jsonl` and recalled the next time you analyze the
+same coin — the pipeline checks its own past calls for consistency and
+direction flips.
 
-## What it does (the whole map)
-
-```
-┌─ Discover ───────────────────────────────────────────────┐
-│ upbit-screen "pick something" — volume/gainer/loser │
-└──────────┬───────────────────────────────────────────────┘
- ▼
-┌─ Analyze ─ upbit-investor (main, 8-stage 8-stage pipeline) ─┐
-│ 1 snapshot candles·ticker·orderbook·indicators·news │
-│ 2 market analyst 3-4 sentence trend/vol/volume summary │
-│ 3 bull vs bear debate — round 1 independent arguments │
-│ 4 bull vs bear debate — round 2 direct rebuttals │
-│ 5 research manager verdict JSON (rating/confidence) │
-│ 6 risk manager 6-gate check + position sizing │
-│ 7 portfolio manager past-decision recall + final call │
-│ 8 trader order proposal JSON (entry/stop) │
-│ │
-│ underlying skills: upbit-market-data / upbit-technical │
-└──────────┬───────────────────────────────────────────────┘
- ▼
-┌─ Validate ────────────────────────────────────────────────┐
-│ upbit-backtest SMA-cross / RSI-reversion · correlation │
-└──────────┬────────────────────────────────────────────────┘
- ▼
-┌─ Execute & Manage ───────────────────────────────────────┐
-│ upbit-trade real orders only past the confirm gate │
-│ upbit-portfolio holdings review · concentration risk │
-└──────────────────────────────────────────────────────────┘
-```
-
-Every conclusion is journaled to `~/.upbit-investor/decisions.jsonl` and
-recalled in later analyses, so the pipeline remembers its own past calls.
+Sibling skills: `upbit-market-data` (quote facts), `upbit-technical`
+(indicator reading), `upbit-screen` (screening), `upbit-backtest` (strategy
+validation + correlation), `upbit-portfolio` (holdings review), `upbit-trade`
+(order execution past the confirm gate).
 
 ## Safety rails
 
 | Rail | What it does |
 |------|--------------|
 | Confirmation gate | always asks the user before any order |
-| 6 risk gates | single-coin weight, total exposure, overheat block, daily loss limit, … |
-| Fees applied | KRW markets 0.05% / BTC·USDT markets 0.25% (charged both legs in backtests) |
+| 6 risk gates | single-coin weight, total exposure, overheat block, order rate, daily loss limit |
 | Kill switch | daily loss limit breach blocks all further buy proposals (hard) |
 | Round-down sizing | quantities always rounded down — never overspends cash |
+| Fees applied | KRW markets 0.05% / BTC·USDT markets 0.25%, charged both legs in backtests |
 | No withdrawals | the plugin never touches withdrawal APIs |
 
 Risk presets: `conservative` (default) / `momentum` / `long_term`.
 
-## Install
+## FAQ
 
-### Claude Code
+<details>
+<summary>Can I try it without API keys?</summary>
 
-```bash
-claude plugin install epicsagas/upbit-investor
-# or locally: claude plugin install /path/to/upbit-investor
-```
+Yes. Quotes, candles, orderbook, trades, screening, indicators, and backtests
+all use the public API. Account queries and orders need a key; without one,
+analysis stays read-only.
 
-### Codex
+</details>
 
-```bash
-codex plugin add epicsagas/upbit-investor
-```
+<details>
+<summary>Does it auto-trade?</summary>
 
-### agy
+No. The pipeline only *proposes* orders; execution happens in the upbit-trade
+skill's confirmation gate, only after you say yes. Withdrawals are not
+supported at all.
 
-Copy the folder to `~/.agy/plugins/upbit-investor/` and restart.
+</details>
 
-### hermes
+<details>
+<summary>How much data do backtests use?</summary>
 
-Copy the folder to `~/.hermes/plugins/upbit-investor/` and restart.
-> If the install scanner warns about `AGENTS.md` (CRITICAL persistence), pass it with `hermes plugins install --force` (or disable `plugins.scan_on_install`).
+The REST API gives the last 200 bars; `scripts/history.py` pulls full
+daily/weekly/monthly history from the crix ZIP archives (locally cached).
+Prefer 1-2 year windows — thin trade counts make the statistics meaningless.
 
-## Layout
+</details>
 
-```
-skills/ 7 skills (SKILL.md is the source of truth for every host)
- upbit-investor/ main 8-stage pipeline + references/ (debate·risk·memory)
- upbit-market-data/ upbit-technical/ upbit-screen/
- upbit-backtest/ upbit-portfolio/ upbit-trade/
-agents/ 7 sub-agents (analyst·bull·bear·research·risk·portfolio·trader)
-scripts/ stdlib-only Python — upbit.py(API) indicators.py history.py screen.py backtest.py
-```
+<details>
+<summary>Buys are blocked with "daily loss limit exceeded".</summary>
+
+That's the kill switch (gate 6, hard). Under the conservative preset, a day
+loss beyond −3% of cash blocks every further buy proposal. Change the preset
+or wait for the next day.
+
+</details>
+
+<details>
+<summary>Indicators look wrong.</summary>
+
+Run `python3 scripts/test_indicators.py` — the indicator math self-check.
+If it passes, the computation is sound; interpretation thresholds live in
+the `upbit-technical` skill's reading table.
+
+</details>
 
 ## Direct script usage (no agent)
 
 ```bash
 python3 scripts/upbit.py ticker KRW-BTC
 python3 scripts/upbit.py candles KRW-BTC --unit days --count 200 | python3 scripts/indicators.py
-python3 scripts/history.py KRW-BTC --start 2024-08-01 # full history (crix ZIP, cached)
+python3 scripts/history.py KRW-BTC --start 2024-08-01   # full history (crix ZIP, cached)
 python3 scripts/screen.py --top 10 --sort gainers
 python3 scripts/backtest.py sma_cross --file /tmp/btc.json
-python3 scripts/test_indicators.py # indicator math self-check
+python3 scripts/test_indicators.py   # indicator math self-check
 ```
+
+Python standard library only — nothing to install.
 
 ## License
 
@@ -153,32 +165,32 @@ constitute investment advice or asset management under the securities,
 capital-markets, or financial-services regulations of any jurisdiction.
 
 1. **Nature of information.** All analyses, indicator interpretations, ratings
- (Buy/Hold/Sell or similar), price targets, and order proposals produced by
- this plugin are reference information derived from public data and
- statistical models. They do not constitute a recommendation, solicitation,
- or offer to buy or sell any cryptocurrency, nor any promise of profit or
- protection against loss.
+   (Buy/Hold/Sell or similar), price targets, and order proposals produced by
+   this plugin are reference information derived from public data and
+   statistical models. They do not constitute a recommendation, solicitation,
+   or offer to buy or sell any cryptocurrency, nor any promise of profit or
+   protection against loss.
 2. **Investment responsibility.** Cryptocurrencies are high-risk assets that
- can lose principal. Past performance and backtest results do not guarantee
- future returns. Full responsibility for every investment decision and its
- outcome rests solely with the user.
+   can lose principal. Past performance and backtest results do not guarantee
+   future returns. Full responsibility for every investment decision and its
+   outcome rests solely with the user.
 3. **Data accuracy.** Market and indicator data come from the Upbit public API
- and may contain transmission delays, outages, or errors. Before executing
- any order, the user must verify final prices and conditions against the
- exchange's official information.
+   and may contain transmission delays, outages, or errors. Before executing
+   any order, the user must verify final prices and conditions against the
+   exchange's official information.
 4. **Software defects.** This software is provided "AS IS", without warranty of
- any kind, express or implied, including but not limited to the warranties of
- merchantability, fitness for a particular purpose, and non-infringement. The
- developers shall in no event be liable for any direct, indirect, incidental,
- or consequential damages arising from software defects, malfunction, or data
- errors.
+   any kind, express or implied, including but not limited to the warranties of
+   merchantability, fitness for a particular purpose, and non-infringement. The
+   developers shall in no event be liable for any direct, indirect, incidental,
+   or consequential damages arising from software defects, malfunction, or data
+   errors.
 5. **API key management.** Issuing, storing, and scoping Upbit API keys is the
- user's responsibility; all losses caused by key leakage are borne by the
- user. Use order-scoped keys only when necessary and with minimal
- permissions.
+   user's responsibility; all losses caused by key leakage are borne by the
+   user. Use order-scoped keys only when necessary and with minimal
+   permissions.
 6. **Tax and legal compliance.** Complying with tax obligations and applicable
- laws related to cryptocurrency trading is the user's duty. This plugin does
- not provide tax or legal advice.
+   laws related to cryptocurrency trading is the user's duty. This plugin does
+   not provide tax or legal advice.
 
 Installing or using this plugin constitutes acceptance of all of the above
 terms.
