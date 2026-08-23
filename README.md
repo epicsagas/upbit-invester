@@ -15,7 +15,7 @@ claude plugin install upbit-investor@epicsagas
 
 # Codex
 codex plugin marketplace add epicsagas/plugins
-codex plugin add upbit-investor
+codex plugin add upbit-investor@epicsagas
 
 # Antigravity
 agy plugin install https://github.com/epicsagas/upbit-invester
