@@ -1,0 +1,38 @@
+{
+  "timestamp": "20260824T001655",
+  "dimensions": {
+    "benchmark:eval_runner": {
+      "details": {
+        "command": "python3 benchmarks/eval_runner.py full",
+        "exit_code": 0,
+        "result_type": "composite",
+        "score": 1.0,
+        "stderr_tail": "",
+        "stdout_tail": "...tail\": \"all indicator self-checks passed\"}, \"live_api\": {\"ticker\": {\"pass\": true, \"latency_ms\": 95, \"error\": null}, \"candles_days\": {\"pass\": true, \"latency_ms\": 89, \"error\": null}, \"candles_minutes\": {\"pass\": true, \"latency_ms\": 84, \"error\": null}, \"orderbook\": {\"pass\": true, \"latency_ms\": 82, \"error\": null}, \"trades\": {\"pass\": true, \"latency_ms\": 76, \"error\": null}}, \"indicator_schema\": {\"pass\": true, \"detail\": \"missing=[]\"}, \"structure\": {\"pass\": true, \"skills\": 7, \"agents\": 7, \"scripts\": 5}}\n"
+      },
+      "duration_ms": 706,
+      "passed": true,
+      "score": 1.0,
+      "verdict": "PASS"
+    },
+    "regression": {
+      "details": {
+        "deltas": {
+          "benchmark:eval_runner": {
+            "baseline": 1.0,
+            "current": 1.0,
+            "delta": "+0.0000",
+            "regressed": false
+          }
+        },
+        "threshold": 0.05
+      },
+      "duration_ms": 0,
+      "passed": true,
+      "score": 1.0,
+      "verdict": "PASS"
+    }
+  },
+  "overall_score": 1.0,
+  "overall_verdict": "PASS"
+}

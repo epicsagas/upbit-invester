@@ -1,0 +1,23 @@
+{
+  "name": "upbit-investor",
+  "version": "0.1.0",
+  "description": "Upbit 코인 투자 멀티 에이전트 분석·매매 플러그인",
+  "author": {
+    "name": "epicsagas",
+    "url": "https://github.com/epicsagas"
+  },
+  "homepage": "https://github.com/epicsagas/upbit-investor",
+  "repository": "https://github.com/epicsagas/upbit-investor",
+  "license": "MIT",
+  "keywords": [],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Upbit Investor",
+    "shortDescription": "Upbit 코인 투자 멀티 에이전트 분석·매매 플러그인",
+    "longDescription": "Upbit 코인 투자 멀티 에이전트 분석·매매 플러그인",
+    "developerName": "epicsagas",
+    "category": "Development & Workflow",
+    "capabilities": ["Bash", "Read", "Write", "Edit"],
+    "websiteURL": "https://github.com/epicsagas/upbit-investor"
+  }
+}
