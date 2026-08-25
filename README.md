@@ -132,7 +132,7 @@ python3 scripts/test_indicators.py   # 지표 계산 자체검증
 
 ## 감사의 글 (Acknowledgements)
 
-이 플러그인은 다음 세 프로젝트의 설계와 자료를 참고해 만들었습니다.
+이 플러그인은 다음 네 프로젝트의 설계와 자료를 참고해 만들었습니다.
 
 **[TradingAgents](https://github.com/tauricresearch/tradingagents)** (Tauric Research) — 종합 분석 파이프라인의 뼈대가 된 멀티 에이전트 토론 구조를 가져왔습니다. 강세·약세 연구자의 다중 라운드 토론, 그 결과를 리서치·리스크·포트폴리오·트레이더가 계층적으로 판정해 내려가는 구조, 그리고 과거 판단 기록을 기억해 다음 분석에 참조하는 메모리 구조 아이디어를 적용했습니다.
 

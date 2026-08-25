@@ -2,7 +2,7 @@
 
 <center><h1>upbit-investor</h1></center>
 
-> Don't make coin calls alone — put the bull and the bear in a room, let them fight, then layer risk gates and your own decision history on top of the verdict.
+> Pit the buy case against the sell case head-on, then carry the verdict through risk checks and your own decision history into a final investment report.
 
 An Upbit coin investment plugin that runs on Claude Code, Codex, Antigravity, and Hermes Agent. Market data, screening, technical indicators, backtesting, portfolio review, and order execution in one bundle — with the centerpiece being an 8-stage role-separated analysis pipeline (table below). Buy/sell orders never fire automatically; your explicit confirmation is always the last gate.
 
@@ -21,9 +21,8 @@ codex plugin add upbit-investor@epicsagas
 agy plugin install https://github.com/epicsagas/upbit-invester
 
 # Hermes Agent — the install scanner flags this plugin's AGENTS.md guide as a
-# CRITICAL "persistence" finding (heuristic: any agent-config file reference),
-# and dangerous verdicts cannot be --force'd. Temporarily disable install
-# scanning, install, then re-enable:
+# CRITICAL "persistence" finding (a heuristic that catches any agent-config
+# file reference). Disable install scanning, install, then re-enable:
 hermes config set plugins.scan_on_install false
 hermes plugins install https://github.com/epicsagas/upbit-invester --enable
 hermes config set plugins.scan_on_install true
