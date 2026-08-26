@@ -2,7 +2,7 @@
 # Spec: https://hermes-agent.nousresearch.com/docs/developer-guide/plugins
 # Loaded by `hermes plugins` from ~/.hermes/plugins/<name>/plugin.yaml
 name: upbit-investor
-version: "0.1.0"
+version: "0.1.1"
 description: "Upbit 코인 투자 멀티 에이전트 분석·매매 플러그인"
 author:
   name: epicsagas

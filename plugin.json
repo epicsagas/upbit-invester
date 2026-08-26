@@ -1,6 +1,6 @@
 {
   "$schema": "https://antigravity.google/schemas/v1/plugin.json",
   "name": "upbit-investor",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Upbit 코인 투자 멀티 에이전트 분석·매매 플러그인"
 }

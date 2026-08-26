@@ -69,7 +69,7 @@ def call(path: str, method="GET", query: dict | None = None, body: dict | None =
         data = json.dumps(body).encode()
         headers["Content-Type"] = "application/json"
     if private:
-        headers["Authorization"] = "Bearer " + _jwt(query if method == "GET" else None)
+        headers["Authorization"] = "Bearer " + _jwt(query if query else None)
     last_err = None
     for attempt in range(3):
         req = urllib.request.Request(url, data=data, headers=headers, method=method)
@@ -147,7 +147,8 @@ def cmd_order(a):
         body.update({"price": str(int(a.price)), "ord_type": "price"})
     else:  # market sell: sell all of volume
         die("market sell needs --volume (coin amount to sell)")
-    print(json.dumps(call("/v1/orders", method="POST", body=body, private=True), ensure_ascii=False))
+    # ponytail: Upbit rejects body-style JWT on POST /v1/orders — send params as query string (hash-signed)
+    print(json.dumps(call("/v1/orders", method="POST", query=body, private=True), ensure_ascii=False))
 
 
 def cmd_orders(a):
