@@ -10,12 +10,12 @@ An Upbit coin investment plugin that runs on Claude Code, Codex, Antigravity, an
 
 ```bash
 # Claude Code
-claude plugin marketplace add epicsagas/plugins
-claude plugin install upbit-investor@epicsagas
+claude plugin marketplace add epicsagas/upbit-invester
+claude plugin install upbit-investor@upbit-investor
 
 # Codex
-codex plugin marketplace add epicsagas/plugins
-codex plugin add upbit-investor@epicsagas
+codex plugin marketplace add epicsagas/upbit-invester
+codex plugin add upbit-investor@upbit-investor
 
 # Antigravity
 agy plugin install https://github.com/epicsagas/upbit-invester
