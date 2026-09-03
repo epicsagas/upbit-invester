@@ -8,6 +8,14 @@ Claude Code, Codex, Antigravity, Hermes Agent에서 모두 동작하는 Upbit �
 
 ## 설치
 
+### Grok Build (xAI)
+
+```bash
+grok plugin install epicsagas/upbit-invester --trust
+```
+
+Grok reads skills from `skills/` and agents from `agents/` at the plugin root. No extra configuration needed.
+
 ```bash
 # Claude Code
 claude plugin marketplace add epicsagas/upbit-invester
