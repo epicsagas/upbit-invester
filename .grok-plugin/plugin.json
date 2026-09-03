@@ -1,0 +1,22 @@
+{
+  "name": "upbit-investor",
+  "version": "0.1.1",
+  "description": "Upbit 코인 투자 멀티 에이전트 분석·매매 플러그인",
+  "author": {
+    "name": "epicsagas",
+    "url": "https://github.com/epicsagas"
+  },
+  "homepage": "https://github.com/epicsagas/upbit-invester",
+  "repository": "https://github.com/epicsagas/upbit-invester",
+  "license": "MIT",
+  "skills": "./skills/",
+  "keywords": [
+    "upbit",
+    "crypto",
+    "trading",
+    "investment",
+    "krw-market"
+  ],
+  "agents": "./agents/",
+  "commands": "./commands/"
+}

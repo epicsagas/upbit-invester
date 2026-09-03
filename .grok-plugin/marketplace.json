@@ -1,0 +1,26 @@
+{
+  "name": "upbit-investor",
+  "description": "Standalone marketplace for the upbit-investor plugin. Install from this repository.",
+  "owner": {
+    "name": "epicsagas"
+  },
+  "plugins": [
+    {
+      "name": "upbit-investor",
+      "description": "Upbit 코인 투자 멀티 에이전트 분석·매매 플러그인",
+      "category": "productivity",
+      "source": {
+        "type": "local",
+        "path": "."
+      },
+      "homepage": "https://github.com/epicsagas/upbit-invester",
+      "keywords": [
+        "upbit",
+        "crypto",
+        "trading",
+        "investment",
+        "krw-market"
+      ]
+    }
+  ]
+}
