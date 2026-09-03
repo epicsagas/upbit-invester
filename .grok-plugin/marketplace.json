@@ -10,8 +10,9 @@
       "description": "Upbit 코인 투자 멀티 에이전트 분석·매매 플러그인",
       "category": "productivity",
       "source": {
-        "type": "local",
-        "path": "."
+        "source": "url",
+        "url": "https://github.com/epicsagas/upbit-invester.git",
+        "sha": "a44804c0ab23337a027ecfacd9e885ba051999c4"
       },
       "homepage": "https://github.com/epicsagas/upbit-invester",
       "keywords": [
