@@ -20,6 +20,9 @@ codex plugin add upbit-investor@upbit-investor
 # Antigravity
 agy plugin install https://github.com/epicsagas/upbit-invester
 
+# Grok Build (xAI)
+grok plugin install epicsagas/upbit-invester --trust
+
 # Hermes Agent — the install scanner flags this plugin's AGENTS.md guide as a
 # CRITICAL "persistence" finding (a heuristic that catches any agent-config
 # file reference). Disable install scanning, install, then re-enable:
